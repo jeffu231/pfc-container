@@ -1,0 +1,23 @@
+services:
+  plex-for-channels:
+    container_name: plex-for-channels
+    build:
+      context: https://github.com/jgomez177/plex-for-channels.git
+      args:
+        - PLEX_CODE=local
+    restart: always
+    networks:
+      - traefik-net
+    volumes: 
+      - plex-for-channels:/app
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.plex-for-channels.rule=Host(`${HOSTNAME}`) && (PathPrefix(`/plextv`))"
+        - "traefik.http.routers.plex-for-channels.middlewares=plex-for-channels"
+        - "traefik.http.middlewares.plex-for-channels.stripprefix.prefixes=/plextv"
+        - "traefik.http.middlewares.plex-for-channels.stripprefix.forceSlash=false"
+networks:
+  traefik-net:
+    external: true
+volumes:
+  plex-for-channels:
