@@ -1,6 +1,7 @@
 services:
   plex-for-channels:
     container_name: plex-for-channels
+    image: plex-for-channels
     build:
       context: https://github.com/jgomez177/plex-for-channels.git
       args:
